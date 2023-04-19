@@ -1,6 +1,7 @@
 package com.mhj.base.board;
 
 import java.sql.Date;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,5 +16,7 @@ public class BoardVO {
 	private String writer;
 	private Date regDate;
 	private Long hit;
+	
+	private List<BoardFileVO> boardFileVO;
 
 }

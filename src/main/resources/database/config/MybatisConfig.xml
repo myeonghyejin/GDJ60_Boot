@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"https://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.mhj.base.board.BoardVO" alias="BoardVO"/>
+		<typeAlias type="com.mhj.base.board.BoardFileVO" alias="BoardFileVO"/>
+		
+		<typeAlias type="com.mhj.base.board.notice.NoticeVO" alias="NoticeVO"/>
+		
+		<typeAlias type="com.mhj.base.util.Pagination" alias="Pagination"/>
+	</typeAliases>
+</configuration>

@@ -5,8 +5,85 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mhj.base.board.notice.NoticeDAO">
-	<insert id="setInsert" parameterType="com.mhj.base.board.BoardVO">
-		INSERT INTO NOTICE (TITLE, CONTENTS, WRITER, REGDATE, HIT)
-		VALUES (#{title}, #{contents}, #{writer}, now(), 0)
+
+	<sql id="search">
+		<where>
+			<if test="condition == 'title'">
+				TITLE LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="condition == 'contents'">
+				CONTENTS LIKE CONCAT('%', #{search}, '%')
+			</if>
+			<if test="condition == 'writer'">
+				WRITER LIKE CONCAT('%', #{search}, '%')
+			</if>
+		</where>
+	</sql>
+
+	<!-- SELECT -->
+	<select id="getTotalCount" parameterType="Pagination" resultType="Long">
+		SELECT COUNT(NUM)
+		FROM NOTICE
+		<include refid="search"></include>
+	</select>
+	
+	<select id="getList" parameterType="Pagination" resultType="NoticeVO">
+		SELECT *
+		FROM NOTICE
+		<include refid="search"></include>
+		ORDER BY NUM DESC
+		LIMIT #{startRow}, #{perPage}
+	</select>
+	
+	<select id="getDetail" parameterType="BoardVO" resultMap="getDetailResult">
+		SELECT *
+		FROM NOTICE N
+			LEFT JOIN
+			NOTICEFILES NF
+			USING (NUM)
+		WHERE NUM = #{num}
+	</select>
+	
+	<resultMap type="NoticeVO" id="getDetailResult">
+		<id column="NUM" property="num"/>
+		<result column="TITLE" property="title"/>
+		<result column="CONTENTS" property="contents"/>
+		<result column="WRITER" property="writer"/>
+		<result column="REGDATE" property="regDate"/>
+		<result column="HIT" property="hit"/>
+		<collection property="boardFileVO" javaType="List" ofType="BoardFileVO">
+			<id column="FILENUM" property="fileNum"/>
+			<result column="FILENAME" property="fileName"/>
+			<result column="ORIGINALNAME" property="originalName"/>
+		</collection>
+	</resultMap>
+	
+	<select id="getFileDetail" parameterType="BoardFileVO" resultType="BoardFileVO">
+		SELECT *
+		FROM NOTICEFILES
+		WHERE FILENUM = #{fileNum}
+	</select>
+
+	<!-- INSERT -->
+	<insert id="setInsert" parameterType="BoardVO" useGeneratedKeys="true" keyProperty="num">
+		INSERT INTO NOTICE (NUM, TITLE, CONTENTS, WRITER, REGDATE, HIT)
+		VALUES (#{num}, #{title}, #{contents}, #{writer}, now(), 0)
 	</insert>
+	
+	<insert id="setFileInsert" parameterType="BoardFileVO">
+		INSERT INTO NOTICEFILES (NUM, FILENAME, ORIGINALNAME)
+		VALUES (#{num}, #{fileName}, #{originalName})
+	</insert>
+	
+	<!-- UPDATE -->
+	<update id="setUpdate" parameterType="BoardVO">
+		UPDATE NOTICE SET TITLE = #{title}, CONTENTS = #{contents}
+	</update>
+	
+	<!-- DELETE -->
+	<delete id="setDelete" parameterType="BoardVO">
+		DELETE TABLE
+		WHERE NUM = #{num}
+	</delete>
+	
 </mapper>
