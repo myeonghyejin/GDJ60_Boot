@@ -4,7 +4,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.mhj.base.board.notice.NoticeDAO">
+<mapper namespace="com.mhj.base.board.qna.QnaDAO">
 	<!-- SQL -->
 	<sql id="search">
 		<where>
@@ -23,13 +23,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- SELECT -->
 	<select id="getTotalCount" parameterType="Pagination" resultType="Long">
 		SELECT COUNT(NUM)
-		FROM NOTICE
+		FROM QNA
 		<include refid="search"></include>
 	</select>
 	
-	<select id="getList" parameterType="Pagination" resultType="NoticeVO">
+	<select id="getList" parameterType="Pagination" resultType="QnaVO">
 		SELECT *
-		FROM NOTICE
+		FROM QNA
 		<include refid="search"></include>
 		ORDER BY NUM DESC
 		LIMIT #{startRow}, #{perPage}
@@ -37,20 +37,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="getDetail" parameterType="BoardVO" resultMap="getDetailResult">
 		SELECT *
-		FROM NOTICE N
+		FROM QNA Q
 			LEFT JOIN
-			NOTICEFILES NF
+			QNAFILES QF
 			USING (NUM)
 		WHERE NUM = #{num}
 	</select>
 	
-	<resultMap type="NoticeVO" id="getDetailResult">
+	<resultMap type="QnaVO" id="getDetailResult">
 		<id column="NUM" property="num"/>
 		<result column="TITLE" property="title"/>
 		<result column="CONTENTS" property="contents"/>
 		<result column="WRITER" property="writer"/>
 		<result column="REGDATE" property="regDate"/>
 		<result column="HIT" property="hit"/>
+		<result column="REF" property="ref"/>
+		<result column="STEP" property="step"/>
+		<result column="DEPTH" property="depth"/>
 		<collection property="boardFileVO" javaType="List" ofType="BoardFileVO">
 			<id column="FILENUM" property="fileNum"/>
 			<result column="FILENAME" property="fileName"/>
@@ -60,30 +63,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="getFileDetail" parameterType="BoardFileVO" resultType="BoardFileVO">
 		SELECT *
-		FROM NOTICEFILES
+		FROM QNAFILES
 		WHERE FILENUM = #{fileNum}
 	</select>
-
+	
 	<!-- INSERT -->
 	<insert id="setInsert" parameterType="BoardVO" useGeneratedKeys="true" keyProperty="num">
-		INSERT INTO NOTICE (NUM, TITLE, CONTENTS, WRITER, REGDATE, HIT)
-		VALUES (#{num}, #{title}, #{contents}, #{writer}, now(), 0)
+		INSERT INTO QNA (NUM, TITLE, CONTENTS, WRITER, REGDATE, HIT, REF, STEP, DEPTH)
+		VALUES (#{num}, #{title}, #{contents}, #{writer}, now(), 0, 0, 0, 0)
 	</insert>
 	
 	<insert id="setFileInsert" parameterType="BoardFileVO">
-		INSERT INTO NOTICEFILES (NUM, FILENAME, ORIGINALNAME)
+		INSERT INTO QNAFILES (NUM, FILENAME, ORIGINALNAME)
 		VALUES (#{num}, #{fileName}, #{originalName})
 	</insert>
 	
 	<!-- UPDATE -->
 	<update id="setUpdate" parameterType="BoardVO">
-		UPDATE NOTICE
+		UPDATE QNA
 		SET TITLE = #{title}, CONTENTS = #{contents}
+	</update>
+	
+	<update id="setRefUpdate" parameterType="BoardVO">
+		UPDATE QNA
+		SET REF = #{num}
+		WHERE NUM = #{num}
 	</update>
 	
 	<!-- DELETE -->
 	<delete id="setDelete" parameterType="BoardVO">
-		DELETE NOTICE
+		DELETE QNA
 		WHERE NUM = #{num}
 	</delete>
 	

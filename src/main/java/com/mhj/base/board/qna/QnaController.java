@@ -1,4 +1,4 @@
-package com.mhj.base.board.notice;
+package com.mhj.base.board.qna;
 
 import java.util.List;
 
@@ -15,33 +15,24 @@ import com.mhj.base.board.BoardFileVO;
 import com.mhj.base.board.BoardVO;
 import com.mhj.base.util.Pagination;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Controller
-@RequestMapping("/notice/*")
-@Slf4j
-public class NoticeController {
+@RequestMapping("/qna/*")
+public class QnaController {
 	
 	@Autowired
-	private NoticeService noticeService;
+	private QnaService qnaService;
 	
-	//각 메서드가 실행되기 전에 이것부터 실행됨
 	@ModelAttribute("board")
 	public String getBoard() {
-		return "notice";
+		return "qna";
 	}
 	
 	/** SELECT **/
 	@GetMapping("list")
-//	@RequestMapping(value = "list", method = {RequestMethod.GET, RequestMethod.POST})
-	public ModelAndView getList(Pagination pagination, ModelAndView mv) throws Exception {
-//		System.out.println(pagination.getCondition());
-//		System.out.println(pagination.getSearch());
+	public ModelAndView getList(Pagination pagination) throws Exception {
+		ModelAndView mv = new ModelAndView();
 		
-		log.info("condition : {}", pagination.getCondition());
-		log.info("search : {}", pagination.getSearch());
-		
-		List<BoardVO> ar = noticeService.getList(pagination);
+		List<BoardVO> ar = qnaService.getList(pagination);
 		
 		mv.addObject("list", ar);
 		mv.setViewName("board/list");
@@ -50,10 +41,10 @@ public class NoticeController {
 	}
 	
 	@GetMapping("detail")
-	public ModelAndView getDetail(NoticeVO noticeVO) throws Exception {
+	public ModelAndView getDetail(QnaVO qnaVO) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		
-		BoardVO boardVO = noticeService.getDetail(noticeVO);
+		BoardVO boardVO = qnaService.getDetail(qnaVO);
 		
 		mv.addObject("boardVO", boardVO);
 		mv.setViewName("board/detail");
@@ -63,38 +54,33 @@ public class NoticeController {
 	
 	@GetMapping("fileDownload")
 	public ModelAndView getFileDownload(BoardFileVO boardFileVO) throws Exception {
-		boardFileVO = noticeService.getFileDetail(boardFileVO);
+		boardFileVO = qnaService.getFileDetail(boardFileVO);
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("boardFileVO", boardFileVO);
-		//FileManager에서 꺼내 오는 이름과 같아야 함
 		mv.setViewName("fileManager");
-		//AbstractView를 상속 받은 상태에서만 가능
 		
 		return mv;
 	}
 	
 	/** INSERT **/
 	@GetMapping("add")
-	public ModelAndView setInsert() throws Exception {
+	public ModelAndView getInsert() throws Exception {
 		ModelAndView mv = new ModelAndView();
 		
 		mv.setViewName("board/add");
+		
 		return mv;
 	}
 	
 	@PostMapping("add")
-	public ModelAndView setInsert(NoticeVO noticeVO, MultipartFile [] boardFiles) throws Exception {
-		
-		for(MultipartFile multipartFile : boardFiles) {
-			log.info("Original Name : {} Size : {}", multipartFile.getOriginalFilename(), multipartFile.getSize());
-		}
-		
-		int result = noticeService.setInsert(noticeVO, boardFiles);
+	public ModelAndView getInsert(QnaVO qnaVO, MultipartFile [] boardFiles) throws Exception {
+		int result = qnaService.setInsert(qnaVO, boardFiles);
 		
 		ModelAndView mv = new ModelAndView();
 		
 		mv.setViewName("redirect:./list");
+				
 		return mv;
 	}
 

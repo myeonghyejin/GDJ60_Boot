@@ -13,9 +13,9 @@
 </head>
 <body class="d-flex flex-column h-100">
 	<main class="flex-shrink-0">
-		<!-- Navigation-->
+		<!-- Header 적용 -->
         <c:import url="../temp/header.jsp"></c:import>
-        <!-- Header-->
+        <!-- Header 끝 -->
         <input type="hidden" name="num" value="${boardVO.num}">
         <section class="py-5">
 			<div class="container px-5 my-5">

@@ -6,10 +6,15 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 
 <configuration>
 	<typeAliases>
+		<typeAlias type="com.mhj.base.member.MemberVO" alias="MemberVO"/>
+		<typeAlias type="com.mhj.base.member.RoleVO" alias="RoleVO"/>
+	
 		<typeAlias type="com.mhj.base.board.BoardVO" alias="BoardVO"/>
 		<typeAlias type="com.mhj.base.board.BoardFileVO" alias="BoardFileVO"/>
 		
 		<typeAlias type="com.mhj.base.board.notice.NoticeVO" alias="NoticeVO"/>
+		
+		<typeAlias type="com.mhj.base.board.qna.QnaVO" alias="QnaVO"/>
 		
 		<typeAlias type="com.mhj.base.util.Pagination" alias="Pagination"/>
 	</typeAliases>

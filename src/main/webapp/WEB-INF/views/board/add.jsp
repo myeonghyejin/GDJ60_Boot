@@ -13,27 +13,20 @@
 </head>
 <body class="d-flex flex-column h-100">
 	<main class="flex-shrink-0">
-		<!-- Navigation-->
+		<!-- Header 적용 -->
         <c:import url="../temp/header.jsp"></c:import>
-        <!-- Header-->
+        <!-- Header 끝 -->
         <section class="py-5">
-                <div class="container px-5">
-                    <!-- Contact form-->
-                    <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5">
-                        <div class="text-center mb-5">
-                            <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-envelope"></i></div>
-                            <h1 class="fw-bolder">Get in touch</h1>
-                            <p class="lead fw-normal text-muted mb-0">We'd love to hear from you</p>
-                        </div>
+			<div class="container px-5">
+				<!-- Contact form-->
+				<div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5">
+					<div class="text-center mb-5">
+						<div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-envelope"></i></div>
+							<h1 class="fw-bolder">Get in touch</h1>
+							<p class="lead fw-normal text-muted mb-0">We'd love to hear from you</p>
+						</div>
                         <div class="row gx-5 justify-content-center">
                             <div class="col-lg-8 col-xl-6">
-                                <!-- * * * * * * * * * * * * * * *-->
-                                <!-- * * SB Forms Contact Form * *-->
-                                <!-- * * * * * * * * * * * * * * *-->
-                                <!-- This form is pre-integrated with SB Forms.-->
-                                <!-- To make this form functional, sign up at-->
-                                <!-- https://startbootstrap.com/solution/contact-forms-->
-                                <!-- to get an API token!-->
                                 <form id="contactForm" action="./add" method="post" enctype="multipart/form-data">
                                     <!-- Title input-->
                                     <div class="form-floating mb-3">
@@ -43,7 +36,7 @@
                                     </div>
                                     <!-- Writer input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="writer" type="text" name="writer" data-sb-validations="required" />
+                                        <input class="form-control" id="writer" type="text" name="writer" placeholder="Enter writer..." data-sb-validations="required" />
                                         <label for="writer">Writer</label>
                                         <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
                                         <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
