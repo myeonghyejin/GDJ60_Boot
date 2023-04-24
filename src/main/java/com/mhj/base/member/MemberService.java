@@ -1,9 +1,11 @@
 package com.mhj.base.member;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,35 +16,49 @@ public class MemberService {
 	@Autowired
 	private MemberDAO memberDAO;
 	
-	/** SELECT **/
-	public List<MemberVO> getList() throws Exception {
-		return memberDAO.getList();
+	//Password가 일치하는지 검증하는 메서드
+	public boolean memberCheck(MemberVO memberVO, BindingResult bindingResult) throws Exception {
+		boolean check = false;
+		//false : error 없음, 검증 성공
+		//true : error 있음, 검증 실패
+		
+		//1. Annotation의 검증 결과
+		check = bindingResult.hasErrors();
+		
+		//2. Password 일치 검증
+		if(!memberVO.getPassword().equals(memberVO.getPasswordCheck())) {
+			check = true;
+			bindingResult.rejectValue("passwordCheck", "member.password.notEqual");
+		}
+		
+		//3. ID 중복 검사
+		MemberVO idCheck = memberDAO.idDuplicateCheck(memberVO);
+		if(idCheck != null) {
+			check = true;
+			bindingResult.rejectValue("userName", "member.id.duplicate");
+		}
+		
+		return check;
 	}
 	
-	public MemberVO getLogin(MemberVO memberVO) throws Exception {	
-//		MemberVO result = memberDAO.getLogin(memberVO);
-//		
-//		if(result != null && memberVO.getPassword().equals(result.getPassword())) {
-//			memberVO.setPassword(null);
-//			memberVO.setRoleVO(result.getRoleVO());
-//			return memberVO;
-//		} else {
-//			return null;
-//		}
-		
-		memberVO = memberDAO.getLogin(memberVO);
-		
-		log.error("MemberVO => {}", memberVO);
-		
-		return memberVO;
-		
-	}
-	
-	/** INSERT **/
-	public int setJoin(MemberVO memberVO) throws Exception {
+	public int setJoin(MemberVO memberVO)throws Exception{
+		memberVO.setEnabled(true);
 		int result = memberDAO.setJoin(memberVO);
-		result = memberDAO.setMemberRole(memberVO);
+		Map<String, Object> map = new HashMap<>();
+		map.put("userName", memberVO.getUserName());
+		map.put("num", 3);
+		result = memberDAO.setMemberRole(map);
+		
 		return result;
+	}
+	
+	public MemberVO idDuplicateCheck(MemberVO memberVO)throws Exception{
+		return memberDAO.idDuplicateCheck(memberVO);
+	}
+	
+	
+	public MemberVO getLogin(MemberVO memberVO)throws Exception{
+		return memberDAO.getLogin(memberVO);
 	}
 
 }

@@ -2,8 +2,11 @@ package com.mhj.base.board.qna;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,8 +18,11 @@ import com.mhj.base.board.BoardFileVO;
 import com.mhj.base.board.BoardVO;
 import com.mhj.base.util.Pagination;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
 @RequestMapping("/qna/*")
+@Slf4j
 public class QnaController {
 	
 	@Autowired
@@ -65,7 +71,7 @@ public class QnaController {
 	
 	/** INSERT **/
 	@GetMapping("add")
-	public ModelAndView getInsert() throws Exception {
+	public ModelAndView getInsert(@ModelAttribute BoardVO boardVO) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		
 		mv.setViewName("board/add");
@@ -74,10 +80,17 @@ public class QnaController {
 	}
 	
 	@PostMapping("add")
-	public ModelAndView getInsert(QnaVO qnaVO, MultipartFile [] boardFiles) throws Exception {
-		int result = qnaService.setInsert(qnaVO, boardFiles);
-		
+	public ModelAndView getInsert(@Valid BoardVO boardVO, BindingResult bindingResult, MultipartFile [] boardFiles) throws Exception {
 		ModelAndView mv = new ModelAndView();
+		
+		int result = qnaService.setInsert(boardVO, boardFiles);
+		
+		if(bindingResult.hasErrors()) {
+			log.warn("=========== 검증 실패 ===========");
+			mv.setViewName("board/add");
+			return mv;
+		}
+		
 		
 		mv.setViewName("redirect:./list");
 				

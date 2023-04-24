@@ -7,10 +7,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.mhj.base.member.MemberDAO">
 
 	<!-- SELECT -->
-	<select id="getList" resultType="MemberVO">
-		SELECT *
+	<select id="idDuplicateCheck" parameterType="MemberVO" resultType="MemberVO">
+		SELECT USERNAME
 		FROM MEMBER
-		ORDER BY USERNAME DESC
+		WHERE USERNAME = #{userName}
 	</select>
 	
 	<select id="getLogin" parameterType="MemberVO" resultMap="getMemberRole">
