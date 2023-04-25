@@ -24,9 +24,5 @@ public class BoardVO {
 	private Long hit;
 	
 	private List<BoardFileVO> boardFileVO;
-	
-	private SubVO subVO;
-//	private String [] names;
-	private List<String> names;
 
 }

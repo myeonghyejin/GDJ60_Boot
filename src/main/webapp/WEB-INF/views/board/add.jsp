@@ -41,33 +41,6 @@
                                         <label for="writer">Writer</label>
                                         <form:errors path="writer"></form:errors>
                                     </div>
-                                    
-                                    <!-- Writer input-->
-                                    <div class="form-floating mb-3">
-                                    	<form:input path="subVO.subName" id="writer" cssClass="form-control"/>
-                                        <label for="writer">Sub Name</label>
-                                    </div>
-                                    <!-- Writer input-->
-                                    <div class="form-floating mb-3">
-                                    	<form:input path="names" id="writer" cssClass="form-control"/>
-                                        <label for="writer">Names</label>
-                                    </div>
-                                    <!-- Writer input-->
-                                    <div class="form-floating mb-3">
-                                    	<form:input path="names" id="writer" cssClass="form-control"/>
-                                        <label for="writer">Names</label>
-                                    </div>
-                                    <!-- Writer input-->
-                                    <div class="form-floating mb-3">
-                                    	<form:input path="boardFileVO[1].fileName" id="writer" cssClass="form-control"/>
-                                        <label for="writer">BoardFileName</label>
-                                    </div>
-                                    <!-- Writer input-->
-                                    <div class="form-floating mb-3">
-                                    	<form:input path="boardFileVO[5].fileName" id="writer" cssClass="form-control"/>
-                                        <label for="writer">BoardFileName</label>
-                                    </div>
-                                    
                                     <!-- Contents input-->
                                     <div class="form-floating mb-3">
                                         <textarea class="form-control" id="contents" name="contents" placeholder="Enter your message here..." style="height: 10rem" data-sb-validations="required"></textarea>
