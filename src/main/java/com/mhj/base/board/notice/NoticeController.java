@@ -2,6 +2,7 @@ package com.mhj.base.board.notice;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +90,17 @@ public class NoticeController {
 	
 	@PostMapping("add")
 	public ModelAndView setInsert(@Valid BoardVO boardVO, BindingResult bindingResult,  MultipartFile [] boardFiles) throws Exception {
+		
+		log.error("====== {} ======", boardVO.getSubVO().getSubName());
+		
+		for(String n : boardVO.getNames()) {
+			log.error("====== {} ======", n);
+		}
+		
+		for(BoardFileVO boardFileVO : boardVO.getBoardFileVO()) {
+			log.error("====== {} ======", boardFileVO.getFileName());
+		}
+		
 		ModelAndView mv = new ModelAndView();
 		
 		if(bindingResult.hasErrors()) {
@@ -101,9 +113,30 @@ public class NoticeController {
 			log.info("Original Name : {} Size : {}", multipartFile.getOriginalFilename(), multipartFile.getSize());
 		}
 		
-		int result = noticeService.setInsert(boardVO, boardFiles);
+//		int result = noticeService.setInsert(boardVO, boardFiles);
 		
 		mv.setViewName("redirect:./list");
+		return mv;
+	}
+	
+	/** DELETE **/
+	@PostMapping("delete")
+	public ModelAndView setDelete(BoardVO boardVO, HttpSession session) throws Exception {
+		ModelAndView mv = new ModelAndView();
+		
+		mv.setViewName("common/result");
+		
+		int result = noticeService.setDelete(boardVO, session);
+		
+		String message = "삭제되지 않았습니다.";
+		
+		if(result > 0) {
+			message = "삭제되었습니다.";
+		}
+		
+		mv.addObject("result", message);
+		mv.addObject("url", "./list");
+		
 		return mv;
 	}
 

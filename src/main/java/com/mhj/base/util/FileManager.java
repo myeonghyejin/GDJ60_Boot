@@ -83,5 +83,11 @@ public class FileManager extends AbstractView {
 		
 		return fileName;
 	}
+	
+	//HDD에서 File 삭제
+	public boolean fileDelete(String path, String fileName) throws Exception {
+		File file = new File(path, fileName);
+		return file.delete();
+	}
 
 }

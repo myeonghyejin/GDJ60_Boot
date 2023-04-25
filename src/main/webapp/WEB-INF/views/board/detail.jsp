@@ -54,6 +54,7 @@
 								<p class="fs-5 mb-4">${boardVO.contents}</p>
 							</section>
 						</article>
+
 					</div>
 				</div>
 			</div>

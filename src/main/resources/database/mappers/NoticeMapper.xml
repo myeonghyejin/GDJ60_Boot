@@ -35,6 +35,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		LIMIT #{startRow}, #{perPage}
 	</select>
 	
+	<select id="getFileList" parameterType="BoardVO" resultType="BoardFileVO">
+		SELECT *
+		FROM NOTICEFILES
+		WHERE NUM = #{num}
+	</select>
+	
 	<select id="getDetail" parameterType="BoardVO" resultMap="getDetailResult">
 		SELECT *
 		FROM NOTICE N
