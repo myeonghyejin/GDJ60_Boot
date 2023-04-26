@@ -6,6 +6,8 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.mhj.base.member.MemberVO;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,5 +26,7 @@ public class BoardVO {
 	private Long hit;
 	
 	private List<BoardFileVO> boardFileVO;
+	
+	private List<MemberVO> memberVO;
 
 }

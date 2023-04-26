@@ -82,6 +82,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="setUpdate" parameterType="BoardVO">
 		UPDATE QNA
 		SET TITLE = #{title}, CONTENTS = #{contents}
+		WHERE NUM = #{num}
 	</update>
 	
 	<update id="setRefUpdate" parameterType="BoardVO">

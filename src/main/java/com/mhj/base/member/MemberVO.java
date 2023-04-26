@@ -36,6 +36,8 @@ public class MemberVO {
 	
 	private boolean enabled;
 	
+	private Date lastTime;
+	
 	private List<RoleVO> roleVO;
 
 }

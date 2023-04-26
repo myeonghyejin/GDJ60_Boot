@@ -21,6 +21,11 @@
 				<div class="text-center mb-5">
                         <h1 class="fw-bolder" style="text-transform: capitalize;">${board} List</h1>
                         <p class="lead fw-normal text-muted mb-0">I want to go home</p>
+                        <p class="lead fw-normal text-muted mb-0">
+                        	<c:forEach items="${member}" var="memberVO">
+								<td>${memberVO.name}님 생일 축하합니다.</td>
+							</c:forEach>
+                        </p>
                     </div>
                     
 				<div class="row gx-5">

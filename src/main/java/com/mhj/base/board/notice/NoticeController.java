@@ -17,6 +17,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.mhj.base.board.BoardFileVO;
 import com.mhj.base.board.BoardVO;
+import com.mhj.base.member.MemberService;
+import com.mhj.base.member.MemberVO;
 import com.mhj.base.util.Pagination;
 
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +30,9 @@ public class NoticeController {
 	
 	@Autowired
 	private NoticeService noticeService;
+	
+	@Autowired
+	private MemberService memberService;
 	
 	//각 메서드가 실행되기 전에 이것부터 실행됨
 	@ModelAttribute("board")
@@ -46,8 +51,10 @@ public class NoticeController {
 		log.info("search : {}", pagination.getSearch());
 		
 		List<BoardVO> ar = noticeService.getList(pagination);
+		List<MemberVO> ar2 = memberService.getBirth();
 		
 		mv.addObject("list", ar);
+		mv.addObject("member", ar2);
 		mv.setViewName("board/list");
 		
 		return mv;
@@ -102,7 +109,7 @@ public class NoticeController {
 			log.info("Original Name : {} Size : {}", multipartFile.getOriginalFilename(), multipartFile.getSize());
 		}
 		
-//		int result = noticeService.setInsert(boardVO, boardFiles);
+		int result = noticeService.setInsert(boardVO, boardFiles);
 		
 		mv.setViewName("redirect:./list");
 		return mv;

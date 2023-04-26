@@ -1,9 +1,11 @@
 package com.mhj.base.member;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
@@ -52,13 +54,20 @@ public class MemberService {
 		return result;
 	}
 	
-	public MemberVO idDuplicateCheck(MemberVO memberVO)throws Exception{
+	public MemberVO idDuplicateCheck(MemberVO memberVO) throws Exception {
 		return memberDAO.idDuplicateCheck(memberVO);
 	}
 	
-	
-	public MemberVO getLogin(MemberVO memberVO)throws Exception{
+	public MemberVO getLogin(MemberVO memberVO) throws Exception {
 		return memberDAO.getLogin(memberVO);
+	}
+	
+	public int setLastTime(MemberVO memberVO) throws Exception {
+		return memberDAO.setLastTime(memberVO);
+	}
+	
+	public List<MemberVO> getBirth() throws Exception {
+		return memberDAO.getBirth();
 	}
 
 }

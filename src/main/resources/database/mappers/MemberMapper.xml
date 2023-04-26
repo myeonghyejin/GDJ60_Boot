@@ -6,6 +6,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.mhj.base.member.MemberDAO">
 
+	<select id="getMembers" resultType="MemberVO">
+		SELECT USERNAME
+		FROM MEMBER
+	</select>
+
 	<!-- SELECT -->
 	<select id="idDuplicateCheck" parameterType="MemberVO" resultType="MemberVO">
 		SELECT USERNAME
@@ -38,6 +43,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</collection>
 	</resultMap>
 	
+	<select id="getBirth" parameterType="MemberVO" resultType="MemberVO">
+		SELECT NAME, EMAIL
+		FROM MEMBER
+		WHERE DATE_FORMAT(BIRTH, '%m-%d') = DATE_FORMAT(now(), '%m-%d');
+	</select>
+	
 	<!-- INSERT -->
 	<insert id="setJoin" parameterType="MemberVO">
 		INSERT INTO MEMBER (USERNAME, PASSWORD, NAME, EMAIL, BIRTH, ENABLED)
@@ -50,6 +61,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<!-- UPDATE -->
+	<update id="setLastTime" parameterType="MemberVO">
+		UPDATE MEMBER
+		SET LASTTIME = now()
+		WHERE USERNAME = #{userName}
+	</update>
+	
+	<update id="setEnabled" parameterType="MemberVO">
+		![CDATA
+		UPDATE MEMBER
+		SET ENABLED = 0
+		WHERE USERNAME IN
+		(SELECT USERNAME
+		FROM MEMBER
+		WHERE TIMESTAMPDIFF (DAY, LASTTIME, now()) >= 3)]]
+		
+		<!-- UPDATE MEMBER
+		SET ENABLED = 0
+		<![CDATA[WHERE LASTTIME <= now() - INTERVAL 3 DAY]]> -->
+	</update>
+	
 	<!-- DELETE -->
 
 </mapper>

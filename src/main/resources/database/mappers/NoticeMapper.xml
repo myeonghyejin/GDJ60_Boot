@@ -85,6 +85,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="setUpdate" parameterType="BoardVO">
 		UPDATE NOTICE
 		SET TITLE = #{title}, CONTENTS = #{contents}
+		WHERE NUM = #{num}
 	</update>
 	
 	<!-- DELETE -->
