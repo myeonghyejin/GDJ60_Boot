@@ -6,16 +6,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.mhj.base.member.MemberDAO">
 
+	<!-- SELECT -->
 	<select id="getMembers" resultType="MemberVO">
 		SELECT USERNAME
 		FROM MEMBER
 	</select>
-
-	<!-- SELECT -->
+	
 	<select id="idDuplicateCheck" parameterType="MemberVO" resultType="MemberVO">
 		SELECT USERNAME
 		FROM MEMBER
-		WHERE USERNAME = #{userName}
+		WHERE USERNAME = #{username}
+	</select>
+	
+	<select id="idEmailDuplicateCheck" parameterType="MemberVO" resultType="MemberVO">
+		SELECT USERNAME, EMAIL
+		FROM MEMBER
+		WHERE USERNAME = #{username}, EMAIL = #{email}
 	</select>
 	
 	<select id="getLogin" parameterType="MemberVO" resultMap="getMemberRole">
@@ -27,16 +33,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			INNER JOIN
 			ROLE R
 			ON MR.NUM = R.NUM
-		WHERE M.USERNAME = #{userName} AND M.PASSWORD = #{password}
+		WHERE M.USERNAME = #{username}
 	</select>
 	
 	<resultMap type="MemberVO" id="getMemberRole">
-		<id column="USERNAME" property="userName"/>
+		<id column="USERNAME" property="username"/>
 		<result column="PASSWORD" property="password"/>
 		<result column="NAME" property="name"/>
 		<result column="EMAIL" property="email"/>
 		<result column="BIRTH" property="birth"/>
-		<result column="ENABLED" property="enabled"/>
 		<collection property="roleVO" javaType="List" ofType="RoleVO">
 			<id column="NUM" property="num"/>
 			<result column="ROLENAME" property="roleName"/>
@@ -52,19 +57,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- INSERT -->
 	<insert id="setJoin" parameterType="MemberVO">
 		INSERT INTO MEMBER (USERNAME, PASSWORD, NAME, EMAIL, BIRTH, ENABLED)
-		VALUES (#{userName}, #{password}, #{name}, #{email}, #{birth}, 1)
+		VALUES (#{username}, #{password}, #{name}, #{email}, #{birth}, 1)
 	</insert>
 	
 	<insert id="setMemberRole" parameterType="RoleVO">
 		INSERT INTO MEMBER_ROLE (USERNAME, NUM)
-		VALUES (#{userName}, 3)
+		VALUES (#{username}, 3)
 	</insert>
 	
 	<!-- UPDATE -->
 	<update id="setLastTime" parameterType="MemberVO">
 		UPDATE MEMBER
 		SET LASTTIME = now()
-		WHERE USERNAME = #{userName}
+		WHERE USERNAME = #{username}
 	</update>
 	
 	<update id="setEnabled" parameterType="MemberVO">

@@ -6,14 +6,23 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class MemberService {
+@Transactional(rollbackFor = Exception.class)
+public class MemberService implements UserDetailsService {
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private MemberDAO memberDAO;
@@ -44,10 +53,11 @@ public class MemberService {
 	}
 	
 	public int setJoin(MemberVO memberVO)throws Exception{
-		memberVO.setEnabled(true);
+//		memberVO.setEnabled(true);
+		memberVO.setPassword(passwordEncoder.encode(memberVO.getPassword()));
 		int result = memberDAO.setJoin(memberVO);
 		Map<String, Object> map = new HashMap<>();
-		map.put("userName", memberVO.getUserName());
+		map.put("username", memberVO.getUsername());
 		map.put("num", 3);
 		result = memberDAO.setMemberRole(map);
 		
@@ -68,6 +78,25 @@ public class MemberService {
 	
 	public List<MemberVO> getBirth() throws Exception {
 		return memberDAO.getBirth();
+	}
+	
+	public MemberVO idEmailDuplicateCheck(MemberVO memberVO) throws Exception {
+		return memberDAO.idEmailDuplicateCheck(memberVO);
+	}
+	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		log.error("=========== Spring Security Login ===========");
+		log.error("=========== {} ===========", username);
+		MemberVO memberVO = new MemberVO();
+		memberVO.setUsername(username);
+		try {
+			memberVO = memberDAO.getLogin(memberVO);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return memberVO;
 	}
 
 }

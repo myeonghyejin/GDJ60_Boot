@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -30,8 +31,8 @@
                                 <form id="contactForm" action="./login" method="post" data-sb-form-api-token="API_TOKEN">
                                     <!-- User Name input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="userName" name="userName" type="text" placeholder="Enter your ID..." data-sb-validations="required" />
-                                        <label for="userName">ID</label>
+                                        <input class="form-control" id="username" value="${cookie.remember.value}" name="username" type="text" placeholder="Enter your ID..." data-sb-validations="required" />
+                                        <label for="username">ID</label>
                                         <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                     </div>
                                     <!-- Password input-->
@@ -40,9 +41,14 @@
                                         <label for="password">Password</label>
                                         <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                     </div>
+                                    <div class="mb-3">
+                                    	<input id="remember" name="remember" value="remember" type="checkbox">
+                                    	<label for="remember">ID 기억하기</label>
+                                    </div>
                                     <!-- Submit Button-->
                                     <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit">Login</button></div>
                                 </form>
+                                <a href="./findPassword">비밀번호를 잊으셨나요?</a>
                             </div>
                         </div>
                     </div>
@@ -52,4 +58,24 @@
 	<!-- Footer 적용 -->
 	<c:import url="../temp/footer.jsp"></c:import>
 	<!-- Footer 끝 -->
+	<script>
+		const exampleModal = document.getElementById('exampleModal')
+		if (exampleModal) {
+		  exampleModal.addEventListener('show.bs.modal', event => {
+		    // Button that triggered the modal
+		    const button = event.relatedTarget
+		    // Extract info from data-bs-* attributes
+		    const recipient = button.getAttribute('data-bs-whatever')
+		    // If necessary, you could initiate an Ajax request here
+		    // and then do the updating in a callback.
+	
+		    // Update the modal's content.
+		    const modalTitle = exampleModal.querySelector('.modal-title')
+		    const modalBodyInput = exampleModal.querySelector('.modal-body input')
+	
+		    modalTitle.textContent = `New message to ${recipient}`
+		    modalBodyInput.value = recipient
+		  })
+		}
+	</script>
 </body>

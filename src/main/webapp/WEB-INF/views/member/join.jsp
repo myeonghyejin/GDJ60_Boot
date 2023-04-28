@@ -32,9 +32,9 @@
                                 	<input type="hidden" name="enabled" value="1">
                                     <!-- User Name input-->
                                     <div class="form-floating mb-3">
-                                        <form:input path="userName" id="userName" cssClass="form-control"/>
-                                       	<form:label path="userName">ID</form:label>
-                                        <form:errors path="userName"></form:errors>
+                                        <form:input path="username" id="username" cssClass="form-control"/>
+                                       	<form:label path="username">ID</form:label>
+                                        <form:errors path="username"></form:errors>
                                     </div>
                                     <!-- Password input-->
                                     <div class="form-floating mb-3">
@@ -45,7 +45,7 @@
                                     <!-- Password Check input-->
                                     <div class="form-floating mb-3">
                                         <form:password path="passwordCheck" id="passwordCheck" cssClass="form-control"/>
-                                        <form:label path="passwordCheck">Password</form:label>
+                                        <form:label path="passwordCheck">Password Check</form:label>
                                         <form:errors path="passwordCheck"></form:errors>
                                     </div>
                                     <!-- Name input-->

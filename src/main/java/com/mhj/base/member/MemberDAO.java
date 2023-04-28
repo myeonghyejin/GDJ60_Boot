@@ -25,5 +25,7 @@ public interface MemberDAO {
 	public int setLastTimeCheck(MemberVO memberVO) throws Exception;
 	
 	public List<MemberVO> getBirth() throws Exception;
+	
+	public MemberVO idEmailDuplicateCheck(MemberVO memberVO) throws Exception;
 
 }
