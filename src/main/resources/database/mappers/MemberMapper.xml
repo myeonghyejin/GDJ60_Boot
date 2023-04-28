@@ -42,6 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="NAME" property="name"/>
 		<result column="EMAIL" property="email"/>
 		<result column="BIRTH" property="birth"/>
+		<result column="ENABLED" property="enabled"/>
 		<collection property="roleVO" javaType="List" ofType="RoleVO">
 			<id column="NUM" property="num"/>
 			<result column="ROLENAME" property="roleName"/>

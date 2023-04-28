@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
+import com.mhj.base.security.UserLoginFailureHandler;
 import com.mhj.base.security.UserLogoutSuccessHandler;
 import com.mhj.base.security.UserSuccessHandler;
 
@@ -61,7 +62,8 @@ public class SecurityConfig {
 				.loginPage("/member/login")
 //				.defaultSuccessUrl("/")
 				.successHandler(new UserSuccessHandler())
-				.failureUrl("/member/login")
+//				.failureUrl("/member/login")
+				.failureHandler(new UserLoginFailureHandler())
 				.permitAll()
 				.and()
 			.logout()

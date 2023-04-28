@@ -28,6 +28,9 @@
                         </div>
                         <div class="row gx-5 justify-content-center">
                             <div class="col-lg-8 col-xl-6">
+                            	<c:if test="${not empty param.errorMessage}">
+                            		<h1>${param.errorMessage}</h1>
+                            	</c:if>
                                 <form id="contactForm" action="./login" method="post" data-sb-form-api-token="API_TOKEN">
                                     <!-- User Name input-->
                                     <div class="form-floating mb-3">
@@ -58,24 +61,7 @@
 	<!-- Footer 적용 -->
 	<c:import url="../temp/footer.jsp"></c:import>
 	<!-- Footer 끝 -->
-	<script>
-		const exampleModal = document.getElementById('exampleModal')
-		if (exampleModal) {
-		  exampleModal.addEventListener('show.bs.modal', event => {
-		    // Button that triggered the modal
-		    const button = event.relatedTarget
-		    // Extract info from data-bs-* attributes
-		    const recipient = button.getAttribute('data-bs-whatever')
-		    // If necessary, you could initiate an Ajax request here
-		    // and then do the updating in a callback.
-	
-		    // Update the modal's content.
-		    const modalTitle = exampleModal.querySelector('.modal-title')
-		    const modalBodyInput = exampleModal.querySelector('.modal-body input')
-	
-		    modalTitle.textContent = `New message to ${recipient}`
-		    modalBodyInput.value = recipient
-		  })
-		}
+	<script type="text/javascript">
+		history.replaceState({}, null, location.pathname)
 	</script>
 </body>
