@@ -32,6 +32,7 @@
                             		<h1>${param.errorMessage}</h1>
                             	</c:if>
                                 <form id="contactForm" action="./login" method="post" data-sb-form-api-token="API_TOKEN">
+                                	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                                     <!-- User Name input-->
                                     <div class="form-floating mb-3">
                                         <input class="form-control" id="username" value="${cookie.remember.value}" name="username" type="text" placeholder="Enter your ID..." data-sb-validations="required" />
@@ -52,6 +53,7 @@
                                     <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit">Login</button></div>
                                 </form>
                                 <a href="./findPassword">비밀번호를 잊으셨나요?</a>
+                                <a href="/oauth2/authorization/kakao">카카오 로그인</a>
                             </div>
                         </div>
                     </div>

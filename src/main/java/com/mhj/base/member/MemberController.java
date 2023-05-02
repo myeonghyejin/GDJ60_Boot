@@ -6,16 +6,24 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +39,36 @@ public class MemberController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	@Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
+	private String adminKey;
+	
+	@GetMapping("delete")
+	public String delete() throws Exception {
+		MemberVO memberVO = (MemberVO)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		//회원가입 방법 구분
+		this.kakaoDelete(memberVO);
+		
+		return "redirect:./logout";
+		
+	}
+	
+	private void kakaoDelete(MemberVO memberVO) {
+		RestTemplate restTemplate = new RestTemplate();
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", "KakaoAK "+adminKey);
+		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+		
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("target_id_type", "user_id");
+		params.add("target_id", memberVO.getAttributes().get("id").toString());
+		
+		HttpEntity<MultiValueMap<String, String>> req= new HttpEntity<>(params, headers);
+		
+		String id=restTemplate.postForObject("https://kapi.kakao.com/v1/user/unlink", req, String.class);
+		log.error("Delete {} ::: ", id);
+	}
+	
 	@GetMapping("findPassword")
 	public ModelAndView findPassword() throws Exception {
 		ModelAndView mv = new ModelAndView();
@@ -42,7 +80,7 @@ public class MemberController {
 	public ModelAndView findPassword(MemberVO memberVO) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		
-		memberVO = memberService.idEmailDuplicateCheck(memberVO);
+//		memberVO = memberService.idEmailDuplicateCheck(memberVO);
 		
 		return mv;
 	}
@@ -125,20 +163,29 @@ public class MemberController {
 		
 	}
 	
-	@GetMapping("logout")
-	public ModelAndView getLogout(HttpSession session) throws Exception {
-		ModelAndView mv = new ModelAndView();
-		
-		MemberVO memberVO = (MemberVO)session.getAttribute("member");
-		
-		int result = memberService.setLastTime(memberVO);
-		
-		session.invalidate();
-		
-		mv.setViewName("redirect:../");
-		
-		return mv;
-	}
+//	@GetMapping("logout")
+//	public ModelAndView getLogout(HttpSession session) throws Exception {
+//		ModelAndView mv = new ModelAndView();
+//		
+//		MemberVO memberVO = (MemberVO)session.getAttribute("member");
+//		
+//		int result = memberService.setLastTime(memberVO);
+//		
+//		session.invalidate();
+//		
+//		mv.setViewName("redirect:../");
+//		
+//		return mv;
+//	}
+	
+//	@GetMapping("socialLogout")
+//	public ModelAndView getSocialLogout(HttpSession session) throws Exception {
+//		ModelAndView mv = new ModelAndView();
+//		
+//		mv.setViewName("redirect:../");
+//		
+//		return mv;
+//	}
 	
 	@GetMapping("login")
 	public ModelAndView getLogin(HttpSession session) throws Exception {

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -46,7 +46,10 @@
 	                    	<h1>
 	                    		<%-- <c:if test="${not empty member}"> --%>
 		                    		<spring:message code="loginSuccess" text="없는 message" arguments="${member.username}, ${member.name}" argumentSeparator=", "></spring:message>
-	                    			<sec:authorize access="isAuthenticated()">로그인 성공</sec:authorize>
+	                    			<sec:authorize access="isAuthenticated()">
+	                    				로그인 성공
+	                    				<sec:authentication property="name"/>
+	                    			</sec:authorize>
 	                    			<sec:authorize access="!isAuthenticated()">비로그인</sec:authorize>
 	                    		<%-- </c:if> --%>
 	                    	</h1>

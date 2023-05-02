@@ -12,7 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM MEMBER
 	</select>
 	
-	<select id="idDuplicateCheck" parameterType="MemberVO" resultType="MemberVO">
+	<select id="findPassword" parameterType="MemberVO" resultType="MemberVO">
 		SELECT USERNAME
 		FROM MEMBER
 		WHERE USERNAME = #{username}
@@ -85,6 +85,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<!-- UPDATE MEMBER
 		SET ENABLED = 0
 		<![CDATA[WHERE LASTTIME <= now() - INTERVAL 3 DAY]]> -->
+	</update>
+	
+	<update id="setTempPassword" parameterType="MemberVO">
+		UPDATE MEMBER
+		SET PASSWORD = #{password}
+		WHERE USERNAME = #{username}
 	</update>
 	
 	<!-- DELETE -->

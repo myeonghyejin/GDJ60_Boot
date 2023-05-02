@@ -26,6 +26,8 @@ public interface MemberDAO {
 	
 	public List<MemberVO> getBirth() throws Exception;
 	
-	public MemberVO idEmailDuplicateCheck(MemberVO memberVO) throws Exception;
+	public MemberVO findPassword(MemberVO memberVO) throws Exception;
+	
+	public int setTempPassword(MemberVO memberVO) throws Exception;
 
 }

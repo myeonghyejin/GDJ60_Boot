@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -13,13 +14,14 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class MemberVO implements UserDetails {
+public class MemberVO implements UserDetails, OAuth2User {
 	
 	@NotBlank
 	private String username;
@@ -44,6 +46,9 @@ public class MemberVO implements UserDetails {
 	private Date lastTime;
 	
 	private List<RoleVO> roleVO;
+	
+	//OAuth2 User의 Token 정보를 저장
+	private Map<String, Object> attributes;
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

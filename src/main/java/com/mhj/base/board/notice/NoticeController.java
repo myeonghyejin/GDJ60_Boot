@@ -89,7 +89,6 @@ public class NoticeController {
 	@GetMapping("add")
 	public ModelAndView setInsert(@ModelAttribute BoardVO boardVO) throws Exception {
 		ModelAndView mv = new ModelAndView();
-		
 		mv.setViewName("board/add");
 		//mv.addObject(new NoticeVO());//속성명은 클래스명의 첫 글자를 소문자로 바꾼 것
 		return mv;

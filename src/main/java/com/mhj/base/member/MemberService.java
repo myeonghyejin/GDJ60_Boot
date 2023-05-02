@@ -3,6 +3,7 @@ package com.mhj.base.member;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -10,9 +11,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
+
+import com.mhj.base.util.MailManager;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,6 +34,9 @@ public class MemberService implements UserDetailsService {
 	@Autowired
 	private MemberDAO memberDAO;
 	
+	@Autowired
+	private MailManager mailManager;
+
 	//Password가 일치하는지 검증하는 메서드
 	public boolean memberCheck(MemberVO memberVO, BindingResult bindingResult) throws Exception {
 		boolean check = false;
@@ -80,8 +90,19 @@ public class MemberService implements UserDetailsService {
 		return memberDAO.getBirth();
 	}
 	
-	public MemberVO idEmailDuplicateCheck(MemberVO memberVO) throws Exception {
-		return memberDAO.idEmailDuplicateCheck(memberVO);
+	public int findPassword(MemberVO memberVO) throws Exception {
+		memberVO = memberDAO.findPassword(memberVO);
+		
+		if(memberVO != null) {
+			log.error("Username ::: {}", memberVO.getUsername());
+			log.error("Email ::: {}", memberVO.getEmail());
+			
+			StringBuffer sb = new StringBuffer();
+			Random random = new Random();
+			
+		}
+		
+		return 0;
 	}
 	
 	@Override
