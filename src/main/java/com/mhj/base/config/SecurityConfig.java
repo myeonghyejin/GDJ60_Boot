@@ -38,6 +38,12 @@ public class SecurityConfig {
 	@Autowired
 	private UserLogoutSuccessHandler userLogoutSuccessHandler;
 	
+	@Autowired
+	private UserSuccessHandler userSuccessHandler;
+	
+	@Autowired
+	private UserLoginFailureHandler userLoginFailureHandler;
+	
 	@Bean
 	//public 선언 시 default로 바꾸라는 메시지 출력됨
 	WebSecurityCustomizer webSecurityConfig() {
@@ -74,9 +80,9 @@ public class SecurityConfig {
 			.formLogin()
 				.loginPage("/member/login")
 //				.defaultSuccessUrl("/")
-				.successHandler(new UserSuccessHandler())
+				.successHandler(userSuccessHandler)
 //				.failureUrl("/member/login")
-				.failureHandler(new UserLoginFailureHandler())
+				.failureHandler(userLoginFailureHandler)
 				.permitAll()
 				.and()
 			.logout()
